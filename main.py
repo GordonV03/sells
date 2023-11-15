@@ -1,10 +1,4 @@
 # import seg as seg
-from skimage import io
-#
-from matplotlib import pyplot as plt
-#
-img = io.imread("0003.png", as_gray=True)
-
 # from skimage.transform import rescale, resize, downscale_local_mean
 #
 # rescaled_img = rescale(img, 1.0/4.0, anti_aliasing=True)
@@ -40,26 +34,28 @@ img = io.imread("0003.png", as_gray=True)
 #
 # plt.tight_layout()
 # plt.show()
-
+from skimage import io
+from matplotlib import pyplot as plt
 from skimage.feature import  canny
 from skimage import restoration
 import skimage.segmentation as seg
 import skimage.color as color
 import numpy as np
 
-edge_canny_1 = canny(img, sigma=1)
-edge_canny_2_5 = canny(img, sigma=2.5)
-edge_canny_3 = canny(img, sigma=3)
+img = io.imread("0003.png", as_gray=True)
+edge_canny_2 = canny(img, sigma=2)
+# edge_canny_2_5 = canny(img, sigma=2.5)
+# edge_canny_3 = canny(img, sigma=3)
 
 psf = np.ones((3,3)) / 9
 
-deconvolved_1, _ = restoration.unsupervised_wiener(edge_canny_1, psf)
-deconvolved_2_5, _ = restoration.unsupervised_wiener(edge_canny_2_5, psf)
-deconvolved_3, _ = restoration.unsupervised_wiener(edge_canny_3, psf)
+deconvolved_2, _ = restoration.unsupervised_wiener(edge_canny_2, psf)
+# deconvolved_2_5, _ = restoration.unsupervised_wiener(edge_canny_2_5, psf)
+# deconvolved_3, _ = restoration.unsupervised_wiener(edge_canny_3, psf)
 
-plt.imsave('deconvolved_2.jpg', deconvolved_1, cmap='gray')
-plt.imsave('deconvolved_2_5.jpg', deconvolved_2_5, cmap='gray')
-plt.imsave('deconvolved_3.jpg', deconvolved_3, cmap='gray')
-print(np.unique(deconvolved_1).size)
-plt.imshow(deconvolved_1, cmap="gray")
+plt.imsave('deconvolved_2.jpg', deconvolved_2, cmap='gray')
+# plt.imsave('deconvolved_2_5.jpg', deconvolved_2_5, cmap='gray')
+# plt.imsave('deconvolved_3.jpg', deconvolved_3, cmap='gray')
+print(np.unique(deconvolved_2).size)
+plt.imshow(deconvolved_2, cmap="gray")
 plt.show()
